@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #6dd5ed, #2193b0);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        a {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            text-decoration: none;
+            background: #34eb77;
+            color: white;
+            border-radius: 5px;
+            margin: 10px; /* Added margin for spacing between buttons */
+            transition: 0.3s;
+        }
+        a:hover {
+            background: #2ca665;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Diet Chatbot</h1>
+    <p>Your personal nutrition assistant!</p>
+    <a href="{{ url_for('diet') }}">Start Chat</a>
+    <a href="{{ url_for('hospital') }}">Hospital Info</a> <!-- New button added -->
+</body>
+</html>

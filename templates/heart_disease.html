@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Heart Disease Prediction</h2>
+    <form action="{{ url_for('heart_disease') }}" method="post">
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+        <div class="form-group">
+            <label for="sex">Sex (1 = male, 0 = female):</label>
+            <input type="number" id="sex" name="sex" min="0" max="1" required>
+        </div>
+        <div class="form-group">
+            <label for="chestPain">Chest Pain Type (0-3):</label>
+            <input type="number" id="chestPain" name="chestPain" min="0" max="3" required>
+        </div>
+        <div class="form-group">
+            <label for="restingBPS">Resting Blood Pressure:</label>
+            <input type="number" id="restingBPS" name="restingBPS" required>
+        </div>
+        <div class="form-group">
+            <label for="cholesterol">Cholesterol:</label>
+            <input type="number" id="cholesterol" name="cholesterol" required>
+        </div>
+        <div class="form-group">
+            <label for="fastingBloodSugar">Fasting Blood Sugar (1 = true, 0 = false):</label>
+            <input type="number" id="fastingBloodSugar" name="fastingBloodSugar" min="0" max="1" required>
+        </div>
+        <div class="form-group">
+            <label for="restingECG">Resting ECG (0-2):</label>
+            <input type="number" id="restingECG" name="restingECG" min="0" max="2" required>
+        </div>
+        <div class="form-group">
+            <label for="maxHeartRate">Maximum Heart Rate:</label>
+            <input type="number" id="maxHeartRate" name="maxHeartRate" required>
+        </div>
+        <div class="form-group">
+            <label for="exerciseAngina">Exercise Induced Angina (1 = yes, 0 = no):</label>
+            <input type="number" id="exerciseAngina" name="exerciseAngina" min="0" max="1" required>
+        </div>
+        <div class="form-group">
+            <label for="oldPeak">ST Depression (oldpeak):</label>
+            <input type="number" id="oldPeak" name="oldPeak" step="0.1" required>
+        </div>
+        <div class="form-group">
+            <label for="STSlope">ST Slope (0-2):</label>
+            <input type="number" id="STSlope" name="STSlope" min="0" max="2" required>
+        </div>
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html> 

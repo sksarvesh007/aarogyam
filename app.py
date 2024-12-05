@@ -2,6 +2,8 @@ import os
 import sqlite3
 import secrets
 import hashlib
+import numpy as np
+import pickle
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from src.hospital import get_hospitals
 from src.diet_pan import diet_plan_chatbot
@@ -10,7 +12,10 @@ from src.med_ocr import extract_image_info
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', secrets.token_hex(16))
 
-# Database initialization function
+# Load the heart disease model
+with open('model/heart_disease.pkl', 'rb') as file:
+    heart_model = pickle.load(file)
+
 def init_db():
     """Initialize the SQLite database and create users table if it doesn't exist."""
     conn = sqlite3.connect('users.db')
@@ -281,6 +286,42 @@ def get_user_medical_reports(username):
         return []
     finally:
         conn.close()
+
+@app.route('/heart_disease', methods=['GET', 'POST'])
+def heart_disease():
+    """Handles heart disease prediction."""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        try:
+            # Collect form data
+            data = {
+                'age': request.form['age'],
+                'sex': request.form['sex'],
+                'chestPain': request.form['chestPain'],
+                'restingBPS': request.form['restingBPS'],
+                'cholesterol': request.form['cholesterol'],
+                'fastingBloodSugar': request.form['fastingBloodSugar'],
+                'restingECG': request.form['restingECG'],
+                'maxHeartRate': request.form['maxHeartRate'],
+                'exerciseAngina': request.form['exerciseAngina'],
+                'oldPeak': request.form['oldPeak'],
+                'STSlope': request.form['STSlope']
+            }
+            
+            # Convert to numpy array
+            arr = np.array([[float(val) for val in data.values()]])
+            
+            # Make prediction
+            pred = heart_model.predict(arr)
+            
+            return render_template('after.html', data=pred[0])
+        except Exception as e:
+            flash(f'Error making prediction: {str(e)}', 'error')
+            return redirect(url_for('heart_disease'))
+    
+    return render_template('heart_disease.html')
 
 init_db()
 

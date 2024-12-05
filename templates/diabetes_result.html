@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 text-center">
+    <h2>Diabetes Prediction Result</h2>
+    <div class="alert {% if prediction == 'No' %}alert-success{% elif prediction == 'Possibility' %}alert-warning{% else %}alert-danger{% endif %} mt-4">
+        <h4>Prediction: {{ prediction }}</h4>
+        {% if prediction == 'No' %}
+            <p>The model predicts no diabetes.</p>
+        {% elif prediction == 'Possibility' %}
+            <p>The model suggests a possibility of diabetes. Please consult with a healthcare professional.</p>
+        {% else %}
+            <p>The model predicts a high likelihood of diabetes. Please consult with a healthcare professional immediately.</p>
+        {% endif %}
+    </div>
+    <a href="{{ url_for('diabetes') }}" class="btn btn-primary mt-3">Make Another Prediction</a>
+</div>
+{% endblock %} 

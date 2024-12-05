@@ -9,6 +9,7 @@ from src.hospital import get_hospitals
 from src.diet_pan import diet_plan_chatbot
 from src.med_ocr import extract_image_info
 from sklearn.preprocessing import StandardScaler
+import tensorflow as tf
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', secrets.token_hex(16))
@@ -20,6 +21,9 @@ with open('model/heart_disease.pkl', 'rb') as file:
 
 with open('model/liver.pkl', 'rb') as file:
     liver_model = pickle.load(file)
+
+with open('model/diabetes.h5', 'rb') as file:
+    diabetes_model = tf.keras.models.load_model('model/diabetes.h5')
 
 def init_db():
     """Initialize the SQLite database and create users table if it doesn't exist."""
@@ -375,6 +379,46 @@ def liver_disease():
             return redirect(url_for('liver_disease'))
     
     return render_template('liver_disease.html')
+
+@app.route('/diabetes', methods=['GET', 'POST'])
+def diabetes():
+    """Handles diabetes prediction."""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        try:
+            # Collect form data
+            gender = 0 if request.form['gender'] == 'male' else 1
+            input_data = np.array([[
+                gender,
+                float(request.form['age']),
+                float(request.form['urea']),
+                float(request.form['cr']),
+                float(request.form['hba1c']),
+                float(request.form['chol']),
+                float(request.form['tg']),
+                float(request.form['hdl']),
+                float(request.form['ldl']),
+                float(request.form['vldl']),
+                float(request.form['bmi'])
+            ]])
+            
+            # Make prediction
+            prediction = diabetes_model.predict(input_data)
+            predicted_class = np.argmax(prediction)
+            
+            # Map prediction to result
+            result_map = {0: 'No', 1: 'Possibility', 2: 'Yes'}
+            result = result_map[predicted_class]
+            
+            return render_template('diabetes_result.html', prediction=result)
+            
+        except Exception as e:
+            flash(f'Error making prediction: {str(e)}', 'error')
+            return redirect(url_for('diabetes'))
+    
+    return render_template('diabetes.html')
 
 init_db()
 

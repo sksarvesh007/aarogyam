@@ -8,13 +8,18 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from src.hospital import get_hospitals
 from src.diet_pan import diet_plan_chatbot
 from src.med_ocr import extract_image_info
+from sklearn.preprocessing import StandardScaler
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', secrets.token_hex(16))
 
 # Load the heart disease model
+# Load the models
 with open('model/heart_disease.pkl', 'rb') as file:
     heart_model = pickle.load(file)
+
+with open('model/liver.pkl', 'rb') as file:
+    liver_model = pickle.load(file)
 
 def init_db():
     """Initialize the SQLite database and create users table if it doesn't exist."""
@@ -322,6 +327,54 @@ def heart_disease():
             return redirect(url_for('heart_disease'))
     
     return render_template('heart_disease.html')
+
+@app.route('/liver_disease', methods=['GET', 'POST'])
+def liver_disease():
+    """Handles liver disease prediction."""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        try:
+            # Collect form data
+            features = [
+                float(request.form['id']),
+                float(request.form['n_days']),
+                float(request.form['age']),
+                int(request.form['ascites']),
+                int(request.form['hepatomegaly']),
+                int(request.form['spiders']),
+                int(request.form['edema']),
+                float(request.form['bilirubin']),
+                float(request.form['albumin']),
+                float(request.form['copper']),
+                float(request.form['alk_phos']),
+                float(request.form['sgot']),
+                float(request.form['prothrombin']),
+                float(request.form['stage'])
+            ]
+            
+            # Convert to numpy array and reshape
+            features = np.array(features).reshape(1, -1)
+            
+            # Scale the features
+            scaler = StandardScaler()
+            features = scaler.fit_transform(features)
+            
+            # Make prediction
+            prediction = liver_model.predict(features)[0]
+            
+            # Convert prediction to status
+            status_map = {0: 'Censored', 1: 'Censored due to liver transplant', 2: 'Death'}
+            result = status_map[prediction]
+            
+            return render_template('liver_result.html', prediction=result)
+            
+        except Exception as e:
+            flash(f'Error making prediction: {str(e)}', 'error')
+            return redirect(url_for('liver_disease'))
+    
+    return render_template('liver_disease.html')
 
 init_db()
 

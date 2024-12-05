@@ -170,7 +170,7 @@ def hospital():
     HERE_API_KEY = os.getenv("here_api")
 
     if request.method == 'POST':
-        # Fetch user-provided latitude, longitude, and query
+        # Fetch  user-provided latitude, longitude, and query
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
         query = request.form.get('query', 'hospital')

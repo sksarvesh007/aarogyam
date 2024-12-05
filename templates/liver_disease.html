@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Liver Disease Prediction</h2>
+    <form method="POST" action="{{ url_for('liver_disease') }}">
+        <div class="form-group">
+            <label for="id">ID:</label>
+            <input type="number" class="form-control" id="id" name="id" required>
+        </div>
+
+        <div class="form-group">
+            <label for="n_days">Number of Days:</label>
+            <input type="number" class="form-control" id="n_days" name="n_days" required>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age (in years):</label>
+            <input type="number" step="0.01" class="form-control" id="age" name="age" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ascites">Ascites:</label>
+            <select class="form-control" id="ascites" name="ascites" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="hepatomegaly">Hepatomegaly:</label>
+            <select class="form-control" id="hepatomegaly" name="hepatomegaly" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="spiders">Spiders:</label>
+            <select class="form-control" id="spiders" name="spiders" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="edema">Edema:</label>
+            <select class="form-control" id="edema" name="edema" required>
+                <option value="0">No edema</option>
+                <option value="1">Edema resolved</option>
+                <option value="2">Edema despite diuretics</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="bilirubin">Bilirubin (mg/dl):</label>
+            <input type="number" step="0.1" class="form-control" id="bilirubin" name="bilirubin" required>
+        </div>
+
+        <div class="form-group">
+            <label for="albumin">Albumin (gm/dl):</label>
+            <input type="number" step="0.1" class="form-control" id="albumin" name="albumin" required>
+        </div>
+
+        <div class="form-group">
+            <label for="copper">Copper (ug/day):</label>
+            <input type="number" class="form-control" id="copper" name="copper" required>
+        </div>
+
+        <div class="form-group">
+            <label for="alk_phos">Alkaline Phosphatase (U/liter):</label>
+            <input type="number" class="form-control" id="alk_phos" name="alk_phos" required>
+        </div>
+
+        <div class="form-group">
+            <label for="sgot">SGOT (U/ml):</label>
+            <input type="number" class="form-control" id="sgot" name="sgot" required>
+        </div>
+
+        <div class="form-group">
+            <label for="prothrombin">Prothrombin Time (seconds):</label>
+            <input type="number" step="0.1" class="form-control" id="prothrombin" name="prothrombin" required>
+        </div>
+
+        <div class="form-group">
+            <label for="stage">Disease Stage:</label>
+            <select class="form-control" id="stage" name="stage" required>
+                <option value="1">Stage 1</option>
+                <option value="2">Stage 2</option>
+                <option value="3">Stage 3</option>
+                <option value="4">Stage 4</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+</div>
+{% endblock %} 

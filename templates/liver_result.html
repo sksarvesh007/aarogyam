@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Liver Disease Prediction Result</h2>
+    <div class="alert {% if prediction == 'Censored' %}alert-success{% else %}alert-warning{% endif %}">
+        <h4>Predicted Status: {{ prediction }}</h4>
+        <p>
+            {% if prediction == 'Censored' %}
+                The model predicts a censored status, indicating no immediate severe outcome.
+            {% elif prediction == 'Censored due to liver transplant' %}
+                The model predicts the patient may need a liver transplant.
+            {% else %}
+                The model predicts a severe outcome. Please consult a healthcare professional immediately.
+            {% endif %}
+        </p>
+    </div>
+    <a href="{{ url_for('liver_disease') }}" class="btn btn-primary">Make Another Prediction</a>
+</div>
+{% endblock %} 

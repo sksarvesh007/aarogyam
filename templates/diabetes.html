@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Diabetes Prediction</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Gender:</label>
+            <select name="gender" class="form-control" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Age:</label>
+            <input type="number" name="age" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Urea:</label>
+            <input type="number" step="0.01" name="urea" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Creatinine (Cr):</label>
+            <input type="number" step="0.01" name="cr" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>HbA1c:</label>
+            <input type="number" step="0.01" name="hba1c" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Cholesterol:</label>
+            <input type="number" step="0.01" name="chol" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Triglycerides:</label>
+            <input type="number" step="0.01" name="tg" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>HDL:</label>
+            <input type="number" step="0.01" name="hdl" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>LDL:</label>
+            <input type="number" step="0.01" name="ldl" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>VLDL:</label>
+            <input type="number" step="0.01" name="vldl" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>BMI:</label>
+            <input type="number" step="0.01" name="bmi" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+</div>
+{% endblock %} 

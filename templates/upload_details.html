@@ -10,6 +10,27 @@
             margin: 0 auto;
             padding: 20px;
         }
+        nav {
+            background-color: #007bff;
+            padding: 10px 0;
+        }
+        .navbar {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .navbar li {
+            margin: 0 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
         .upload-form {
             background-color: #f4f4f4;
             padding: 20px;
@@ -27,6 +48,18 @@
     </style>
 </head>
 <body>
+    <nav>
+        <ul class="navbar">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('diet') }}">Start Chat</a></li>
+            <li><a href="{{ url_for('hospital') }}">Hospital Info</a></li>
+            <li><a href="{{ url_for('heart_disease') }}">Predict Heart Disease</a></li>
+            <li><a href="{{ url_for('medical_reports') }}">Upload Medical Reports</a></li>
+            <li><a href="{{ url_for('liver_disease') }}">Liver Disease Prediction</a></li>
+            <li><a href="{{ url_for('diabetes') }}">Diabetes Prediction</a></li>
+            <li><a href="{{ url_for('knowledge_chat') }}">Knowledge Chatbot</a></li>
+        </ul>
+    </nav>
     <h1>Upload User Details</h1>
     
     {% with messages = get_flashed_messages(with_categories=true) %}

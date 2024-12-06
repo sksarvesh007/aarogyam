@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Disease based Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        nav {
+            background-color: #007bff;
+            padding: 10px 0;
+        }
+        .navbar {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .navbar li {
+            margin: 0 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .chat-history {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .user-message, .bot-response {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #e1f5fe;
+            text-align: right;
+        }
+        .bot-response {
+            background-color: #ffe0b2;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="navbar">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('diet') }}">Start Chat</a></li>
+            <li><a href="{{ url_for('hospital') }}">Hospital Info</a></li>
+            <li><a href="{{ url_for('heart_disease') }}">Predict Heart Disease</a></li>
+            <li><a href="{{ url_for('medical_reports') }}">Upload Medical Reports</a></li>
+            <li><a href="{{ url_for('liver_disease') }}">Liver Disease Prediction</a></li>
+            <li><a href="{{ url_for('diabetes') }}">Diabetes Prediction</a></li>
+            <li><a href="{{ url_for('knowledge_chat') }}">Knowledge Chatbot</a></li>
+        </ul>
+    </nav>
+    <div class="chat-container">
+        <h1>Health Disease based Chatbot</h1>
+        <div class="chat-history">
+            {% if response %}
+                <div class="user-message">You: {{ user_query }}</div>
+                <div class="bot-response">Bot: {{ response }}</div>
+            {% endif %}
+        </div>
+        <form method="POST">
+            <input type="text" id="user_query" name="user_query" placeholder="Ask a question..." required>
+            <button type="submit">Submit</button>
+        </form>
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+</body>
+</html>

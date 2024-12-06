@@ -10,6 +10,7 @@ from src.diet_pan import diet_plan_chatbot
 from src.med_ocr import extract_image_info
 from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
+from knowledgegraph import GraphQueryProcessor
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', secrets.token_hex(16))
@@ -25,6 +26,9 @@ with open('model/liver.pkl', 'rb') as file:
 with open('model/diabetes.h5', 'rb') as file:
     diabetes_model = tf.keras.models.load_model('model/diabetes.h5')
 
+# Initialize the GraphQueryProcessor
+graph_query_processor = GraphQueryProcessor()
+
 def init_db():
     """Initialize the SQLite database and create users table if it doesn't exist."""
     conn = sqlite3.connect('users.db')
@@ -34,7 +38,8 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
-        salt TEXT NOT NULL
+        salt TEXT NOT NULL,
+        medical_report TEXT
     )
     ''')
     conn.commit()
@@ -249,8 +254,8 @@ def save_medical_report(username, report_text):
     
     try:
         cursor.execute(
-            'INSERT INTO medical_reports (username, report_data) VALUES (?, ?)', 
-            (username, report_text)
+            'UPDATE users SET medical_report = ? WHERE username = ?', 
+            (report_text, username)
         )
         conn.commit()
     except sqlite3.Error as e:
@@ -419,6 +424,21 @@ def diabetes():
             return redirect(url_for('diabetes'))
     
     return render_template('diabetes.html')
+
+@app.route('/knowledge_chat', methods=['GET', 'POST'])
+def knowledge_chat():
+    """Handles the knowledge chatbot."""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    response = None
+    if request.method == 'POST':
+        user_query = request.form.get('user_query')
+        if user_query:
+            # Process the query using the GraphQueryProcessor
+            response = graph_query_processor.process_query(user_query)
+    
+    return render_template('knowledge_chat.html', response=response)
 
 init_db()
 
